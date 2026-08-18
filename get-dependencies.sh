@@ -31,7 +31,6 @@ NO_CONFIGURE=1 ./autogen.sh
     --enable-sdl-audio \
     --enable-jit-compiler \
     --with-bincue \
-    --with-libvhd \
     --with-vdeplug
 
 sed -i '/#define SIGSEGV_FAULT_HANDLER_ARGLIST_1/i \#ifndef SIGSEGV_FAULT_HANDLER_ARGLIST\n#define SIGSEGV_FAULT_HANDLER_ARGLIST int sig, siginfo_t *sip, void *ucp\n#endif' ../CrossPlatform/sigsegv.cpp

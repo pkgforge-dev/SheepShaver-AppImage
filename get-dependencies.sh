@@ -6,21 +6,34 @@ ARCH=$(uname -m)
 
 echo "Installing package dependencies..."
 echo "---------------------------------------------------------------"
-# pacman -Syu --noconfirm PACKAGESHERE
+pacman -Syu --noconfirm \
+    libdecor \
+    sdl3     \
+    vde2
 
 echo "Installing debloated packages..."
 echo "---------------------------------------------------------------"
 get-debloated-pkgs --add-common --prefer-nano
 
-# Comment this out if you need an AUR package
-#make-aur-package PACKAGENAME
+echo "Building SheepShaver..."
+echo "---------------------------------------------------------------"
+REPO="https://github.com/kanjitalk755/macemu"
+VERSION="$(git ls-remote "$REPO" HEAD | cut -c 1-9 | head -1)"
+git clone --recursive --depth 1 "$REPO" ./macemu
+echo "$VERSION" > ~/version
 
-# If the application needs to be manually built that has to be done down here
+mkdir -p ./AppDir/bin
+cd ./macemu/SheepShaver/src/Unix
+NO_CONFIGURE=1 ./autogen.sh
+./configure \
+    --with-sdl3 \
+    --enable-sdl-video \
+    --enable-sdl-audio \
+    --enable-jit-compiler \
+    --enable-addressing=direct,0x10000000 \
+    --with-bincue \
+    --with-libvhd \
+    --with-vdeplug
 
-# if you also have to make nightly releases check for DEVEL_RELEASE = 1
-#
-# if [ "${DEVEL_RELEASE-}" = 1 ]; then
-# 	nightly build steps
-# else
-# 	regular build steps
-# fi
+make -j$(nproc)
+mv -v ./SheepShaver ../../../../AppDir/bin

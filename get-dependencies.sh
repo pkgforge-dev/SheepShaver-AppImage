@@ -33,7 +33,7 @@ NO_CONFIGURE=1 ./autogen.sh
     --with-bincue \
     --with-libvhd \
     --with-vdeplug
-    #    --enable-addressing=direct,0x10000000 \
 
+sed -i '/#define SIGSEGV_FAULT_HANDLER_ARGLIST_1/i #ifndef SIGSEGV_FAULT_HANDLER_ARGLIST\n#define SIGSEGV_FAULT_HANDLER_ARGLIST int sig, siginfo_t *sip, void *ucp\n#endif' ../CrossPlatform/sigsegv.cpp
 make -j$(nproc)
 mv -v ./SheepShaver ../../../../AppDir/bin

@@ -35,5 +35,6 @@ NO_CONFIGURE=1 ./autogen.sh
     --with-vdeplug
 
 sed -i '/#define SIGSEGV_FAULT_HANDLER_ARGLIST_1/i \#ifndef SIGSEGV_FAULT_HANDLER_ARGLIST\n#define SIGSEGV_FAULT_HANDLER_ARGLIST int sig, siginfo_t *sip, void *ucp\n#endif' ../CrossPlatform/sigsegv.cpp
+sed -i '/#ifndef SIGSEGV_FAULT_ADDRESS_FAST/i \#ifndef SIGSEGV_FAULT_ADDRESS\n#define SIGSEGV_FAULT_ADDRESS sip->si_addr\n#endif' ../CrossPlatform/sigsegv.cpp
 make -j$(nproc)
 mv -v ./SheepShaver ../../../../AppDir/bin

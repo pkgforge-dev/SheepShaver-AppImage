@@ -30,10 +30,10 @@ NO_CONFIGURE=1 ./autogen.sh
     --enable-sdl-video \
     --enable-sdl-audio \
     --enable-jit-compiler \
-    --enable-addressing=direct,0x10000000 \
     --with-bincue \
     --with-libvhd \
     --with-vdeplug
+    #    --enable-addressing=direct,0x10000000 \
 
 make -j$(nproc)
 mv -v ./SheepShaver ../../../../AppDir/bin
